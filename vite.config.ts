@@ -1,7 +1,27 @@
-import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
+
 import { defineConfig } from 'vite'
 
+import { dependencies, devDependencies } from './package.json'
+
 // https://vitejs.dev/config/
+
 export default defineConfig({
-  plugins: [react()],
+  build: {
+    lib: {
+      entry: resolve(__dirname, 'src/index.ts'),
+      fileName: 'tehnoroboty_ui',
+      formats: ['es'],
+      name: 'tehnoroboty_ui',
+    },
+    rollupOptions: {
+      external: [
+        'react/jsx-runtime',
+        ...Object.keys(dependencies),
+        ...Object.keys(devDependencies),
+      ],
+    },
+    sourcemap: true,
+    target: 'esnext',
+  },
 })
